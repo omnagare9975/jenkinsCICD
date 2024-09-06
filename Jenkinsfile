@@ -2,33 +2,44 @@ pipeline {
     agent any
 
     stages {
-        stage("Checkout") {
+        stage('Build') {
             steps {
-                git branch: 'dev', url: 'https://github.com/omnagare9975/jenkinsCICD.git'
+                // Add your build steps here
+                echo 'Building...'
             }
         }
-        stage("Building") {
+
+        stage('Test') {
             steps {
-                sh 'echo "Building The File"'
+                // Add your test steps here
+                echo 'Running tests...'
             }
         }
-        stage("Test") {
+
+        stage('Deploy') {
             steps {
-                sh 'echo "Testing the File"'
-            }
-        }
-        stage("Deploying Application") {
-            steps {
-                sh 'echo "This is Tested"'
+                // Add your deployment steps here
+                echo 'Deploying...'
             }
         }
     }
 
     post {
-        failure {
-            mail to: 'omnagare07@gmail.com',
-                subject: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                body: "Something went wrong in the build pipeline."
+        always {
+            emailext (
+                subject: "Pipeline Status: ${currentBuild.result}",
+                body: '''<html>
+                    <body>
+                        <p>Build Status: ${currentBuild.result}</p>
+                        <p>Build Number: ${currentBuild.number}</p>
+                        <p>Check the <a href="${env.BUILD_URL}">console output</a>.</p>
+                    </body>
+                </html>''',
+                to: 'omnagare07@gmail.com',
+                from: 'omnagare83@gmail.com',
+                replyTo: 'jenkins@example.com',
+                mimeType: 'text/html'
+            )
         }
     }
 }

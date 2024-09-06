@@ -34,23 +34,15 @@ pipeline {
 
     post {
         always {
-            script {
-                // Debugging token values to check if they are accessible
-                echo "Build Status: ${currentBuild.result}"
-                echo "Build Number: ${currentBuild.number}"
-                echo "Build URL: ${env.BUILD_URL}"
-            }
-
-            // Send email notification with build information
             emailext (
                 subject: "Pipeline Status: ${BUILD_NUMBER}",
                 body: '''<html>
-                    <body>
-                        <p>Build Status: ${BUILD_STATUS}</p>
-                        <p>Build Number: ${BUILD_NUMBER}</p>
-                        <p>Check the <a href="${BUILD_URL}">console output</a>.</p>
-                    </body>
-                </html>''',
+                            <body>
+                                <p>Build Status: ${BUILD_STATUS}</p>
+                                <p>Build Number: ${BUILD_NUMBER}</p>
+                                <p>Check the <a href="${BUILD_URL}">console output</a>.</p>
+                            </body>
+                        </html>''',
                 to: 'omnagare83@gmail.com',
                 from: 'jenkins@example.com',
                 replyTo: 'jenkins@example.com',

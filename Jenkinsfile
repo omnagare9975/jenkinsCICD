@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 echo 'Checking out SCM...'
-                // You can add your actual SCM checkout step here
+                // Add your SCM checkout step here
                 // checkout scm
             }
         }
@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                // Add your actual build steps here
+                // Add your build steps here
             }
         }
 
@@ -34,23 +34,24 @@ pipeline {
 
     post {
         always {
-            // Debugging tokens before using them in the email
             script {
+                // Debugging token values to check if they are accessible
                 echo "Build Status: ${currentBuild.result}"
                 echo "Build Number: ${currentBuild.number}"
                 echo "Build URL: ${env.BUILD_URL}"
             }
 
+            // Send email notification with build information
             emailext (
-                subject: "Pipeline Status: ${currentBuild.result}",
+                subject: "Pipeline Status: ${BUILD_NUMBER}",
                 body: '''<html>
                     <body>
-                        <p>Build Status: ${currentBuild.result}</p>
-                        <p>Build Number: ${currentBuild.number}</p>
-                        <p>Check the <a href="${env.BUILD_URL}">console output</a>.</p>
+                        <p>Build Status: ${BUILD_STATUS}</p>
+                        <p>Build Number: ${BUILD_NUMBER}</p>
+                        <p>Check the <a href="${BUILD_URL}">console output</a>.</p>
                     </body>
                 </html>''',
-                to: 'omnagare07@gmail.com',
+                to: 'jaiswaladi246@gmail.com',
                 from: 'jenkins@example.com',
                 replyTo: 'jenkins@example.com',
                 mimeType: 'text/html'
